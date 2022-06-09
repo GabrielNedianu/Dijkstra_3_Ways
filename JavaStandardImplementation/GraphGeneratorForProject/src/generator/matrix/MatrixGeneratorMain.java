@@ -1,4 +1,4 @@
-package generator.adjacencylist;
+package generator.matrix;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,31 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Generator for adjacency list of a graph
- * </br>Format: 
- * no nodes  _  no_edges
- * </br>
- * for i: 1-> no_edges:
- * </br>
- * fromNode  _  toNode  _  distance 
- * </br>
- * @author gabri
- *
- */
-public class GeneratorMain {
+public class MatrixGeneratorMain {
 
 	public static void main(String[] args) {
 		int noOfTests = 10;
-		for(int i = 1; i<= noOfTests; i++) {
-			File f = new File("test" + Integer.toString(i-1));
+		for(int i = 1; i<= 1; i++) {
+			File f = new File("matrixFiles/TestMatrix" + Integer.toString(i-1));
 			try {
 				Random random = new Random();
-				int noNodes = random.nextInt(20*i) + 10;
+				int noNodes =6;
 				int noEdges = random.nextInt(noNodes*2) + noNodes;
+				int[][] matrix = new int[noNodes][noNodes];
 				List<Edge> edgesList = new ArrayList<>();
 				StringBuilder fileContent = new StringBuilder();
 				fileContent.append(noNodes).append(" ").append(noEdges).append("\n");
+				for(int nd = 0; nd < noNodes; nd++) {
+					matrix[nd][nd] = 0;
+				}
 				for(int edges = 0; edges < noEdges; edges++) {
 					int fromNodeIndex = random.nextInt(noNodes);
 					int toNodeIndex = getNextInt(noNodes, fromNodeIndex, random);
@@ -41,9 +33,15 @@ public class GeneratorMain {
 						toNodeIndex = getNextInt(noNodes, fromNodeIndex, random);
 					}
 					edgesList.add(new Edge(fromNodeIndex, toNodeIndex));
-					fileContent.append(fromNodeIndex).append(" ")
-						.append(toNodeIndex).append(" ")
-						.append(random.nextInt(20)).append("\n");
+					System.err.println("Da" + fromNodeIndex + " " + toNodeIndex);
+					matrix[fromNodeIndex][toNodeIndex] = random.nextInt(20) + 1;
+					matrix[toNodeIndex][fromNodeIndex] = matrix[fromNodeIndex][toNodeIndex];
+				}
+				for(int m = 0; m < noNodes; m++) {
+					for(int n = 0; n < noNodes; n++) {
+						fileContent.append(matrix[m][n]).append(" ");
+					}
+					fileContent.append("\n");
 				}
 				Files.write(Paths.get(f.toURI()), fileContent.toString().getBytes());
 				
@@ -58,7 +56,7 @@ public class GeneratorMain {
 			}
 			return nextInt;
 		}
-
+		
 }
 
 class Edge {
