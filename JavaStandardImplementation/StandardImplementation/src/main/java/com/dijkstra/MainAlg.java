@@ -1,5 +1,9 @@
 package src.main.java.com.dijkstra;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,42 +13,49 @@ import src.main.java.com.dijkstra.graph.Node;
 
 public class MainAlg {
 	
-	public static void main(String[] args) {
-		
-		List<Node> nodes = new ArrayList<>();
-		// Define the edges of the graph
-		for(int i = 0; i <= 7; i++) {
-			nodes.add(new Node(i));
-		}
-		
-		Edge[] edges =
-			{	new Edge(nodes.get(0),nodes.get(2),1),
-				new Edge(nodes.get(0),nodes.get(3),4),
-				new Edge(nodes.get(0),nodes.get(4),2),
-				new Edge(nodes.get(0),nodes.get(1),3),
-				new Edge(nodes.get(1),nodes.get(3),2),
-				new Edge(nodes.get(1),nodes.get(4),3),
-				new Edge(nodes.get(1),nodes.get(5),1),
-				new Edge(nodes.get(2),nodes.get(4),1),
-				new Edge(nodes.get(3),nodes.get(5),4),
-				new Edge(nodes.get(4),nodes.get(5),2),
-				new Edge(nodes.get(4),nodes.get(6),7),
-				new Edge(nodes.get(4),nodes.get(7),2),
-				new Edge(nodes.get(5),nodes.get(6),4),
-				new Edge(nodes.get(6),nodes.get(7),5)
-			};
-		
-		// Create the graph
-		
-		Graph graph = new Graph(edges, nodes.toArray(new Node[0]));
-		
-		// Update the graph with the shortest distances
-		
-		graph.calculateShortestDistances();
-		
-		// Display the graph
-		
-		System.out.println(graph.toString());
+	/**
+	 * The number of tests
+	 */
+	private static int noOfTests = 10;
 	
+	public static void main(String[] args) throws Exception {
+		
+		int noNodes;
+		int noEdges;
+		
+		for(int i = 0; i < noOfTests; i++) {
+			
+			System.out.println("\n\n------------------ TEST: " + Integer.toString(i + 1) + " -------------------\n\n");
+			
+			List<String> allLines = Files.readAllLines(Paths.get(new File("resources/test" + i).toURI()));
+			String[] firstLine = allLines.get(0).split(" ");
+			noNodes = Integer.parseInt(firstLine[0]);
+			noEdges = Integer.parseInt(firstLine[1]);
+			
+			List<Node> nodes = new ArrayList<>();
+			List<Edge> edges = new ArrayList<>();
+			
+			for(int node = 0; node < noNodes; node++) {
+				nodes.add(new Node(node));
+			}
+			
+			for(int line = 1; line <= noEdges; line++) {
+				String[] edgeLine = allLines.get(line).split(" ");
+				edges.add(new Edge(
+						nodes.get(Integer.parseInt(edgeLine[0])),
+						nodes.get(Integer.parseInt(edgeLine[1])),
+						Integer.parseInt(edgeLine[2])));
+			}
+			
+			// Create the graph
+			Graph graph = new Graph(edges.toArray(new Edge[0]), nodes.toArray(new Node[0]));
+			
+			// Update the graph with the shortest distances
+			
+			graph.calculateShortestDistances();
+			
+			// Display the graph
+			System.out.println(graph.toString());
+		}
 	}
 }
