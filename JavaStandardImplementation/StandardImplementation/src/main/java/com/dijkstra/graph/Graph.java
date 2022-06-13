@@ -50,41 +50,28 @@ public class Graph {
 	 */
 	public void calculateShortestDistances() {
 		
-		// Set node 0 as the source
 		this.nodes[0].setDistanceFromSource(0);
 		int nextNodeIndex = 0;
 		
 		// Visit every node, in order of stored distance
 		for (int i = 0; i < this.nodes.length; i++) {
-			
-			// Loop round the edges that are joined to the current node
 			List<Edge> currentNodeEdges = this.nodes[nextNodeIndex].getEdges();
 			for (int joinedEdge = 0; joinedEdge < currentNodeEdges.size(); joinedEdge++) {
-	
-				// Determine the joined edge neighbour of the current node
+
 				Node neighbour = currentNodeEdges.get(joinedEdge).getNeighbourNode(nodes[nextNodeIndex]);
 				
-				// Only interested in an unvisited neighbour
 				if (!neighbour.isVisited()) {
-					
-					// Calculate the tentative distance for the neighbour
-					int tentative = this.nodes[nextNodeIndex].getDistanceFromSource() + currentNodeEdges.get(joinedEdge).getLength();
-					
+					// Calculate the potential distance for the neighbour
+					int potentialValue = this.nodes[nextNodeIndex].getDistanceFromSource() + currentNodeEdges.get(joinedEdge).getLength();
 					// Overwrite if the tentative distance is less than what's currently stored
-					if (tentative < neighbour.getDistanceFromSource()) {
-						neighbour.setDistanceFromSource(tentative);
+					if (potentialValue < neighbour.getDistanceFromSource()) {
+						neighbour.setDistanceFromSource(potentialValue);
 					}
 				}
 			}
-			
-			// All neighbours are checked so this node is now visited
 			nodes[nextNodeIndex].setVisited(true);
-			
-			// The next node to visit must be the one with the shortest distance.
 			nextNodeIndex = getNodeShortestDistanced();
-		
 		}
-
 	}
 	
 	/**

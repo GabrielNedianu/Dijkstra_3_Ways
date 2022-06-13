@@ -7,6 +7,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import main.java.com.graph.*;
 
+/**
+ * Main class for the Dijkstra Parallel implementation
+ * 
+ * @author gabriel_nedianu
+ *
+ */
 public class DijkstraParallel {
 
     private Graph graph;

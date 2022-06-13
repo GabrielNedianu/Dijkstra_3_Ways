@@ -10,8 +10,9 @@ import java.util.Random;
 
 public class MatrixGeneratorMain {
 
+	int noTests = 10;
+	
 	public static void main(String[] args) {
-		int noOfTests = 10;
 		for(int i = 1; i<= 1; i++) {
 			File f = new File("matrixFiles/TestMatrix" + Integer.toString(i-1));
 			try {
@@ -33,7 +34,6 @@ public class MatrixGeneratorMain {
 						toNodeIndex = getNextInt(noNodes, fromNodeIndex, random);
 					}
 					edgesList.add(new Edge(fromNodeIndex, toNodeIndex));
-					System.err.println("Da" + fromNodeIndex + " " + toNodeIndex);
 					matrix[fromNodeIndex][toNodeIndex] = random.nextInt(20) + 1;
 					matrix[toNodeIndex][fromNodeIndex] = matrix[fromNodeIndex][toNodeIndex];
 				}

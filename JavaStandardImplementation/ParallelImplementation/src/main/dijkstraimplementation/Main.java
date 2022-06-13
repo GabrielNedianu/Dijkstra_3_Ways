@@ -20,8 +20,6 @@ public class Main {
     public static void main(String[] args) {
         Graph graph;
         List<Integer> results = new ArrayList<>();
-            //if run with arguments
-                //no arguments, default to the parallel method with 4 threads
                 graph = readGraph(INPUT_FILE);
                 runParallelMethod(graph, 1);
             writeResults("output.txt", results);
